@@ -1,5 +1,10 @@
 package com.udacity.sandwichclub.model;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class Sandwich {
@@ -15,6 +20,44 @@ public class Sandwich {
      * No args constructor for use in serialization
      */
     public Sandwich() {
+    }
+    /*
+     * Constructor taking a JSON object
+     */
+    public Sandwich(JSONObject jsonObject) throws JSONException {
+        /*
+         Get the 'name' object from ther input json object
+         */
+        JSONObject  nameObject = jsonObject.getJSONObject("name");
+        /*
+         get the main name of this meal
+         */
+        mainName = nameObject.getString("mainName") ;
+        /*
+         * 'alsoKnownAs' is an array of strings
+         */
+        JSONArray jsonArrayOfStrings    = nameObject.getJSONArray("alsoKnownAs") ;
+        /*
+         * add other names to 'alsoKnownAs'
+         */
+        alsoKnownAs = new ArrayList<String>() ;
+        for ( int i = 0 ; i < jsonArrayOfStrings.length() ; i++) {
+            alsoKnownAs.add(jsonArrayOfStrings.getString(i)) ;
+        }
+        placeOfOrigin = jsonObject.getString("placeOfOrigin") ;
+        description = jsonObject.getString("description") ;
+        image = jsonObject.getString("image") ;
+        /*
+            Get the 'ingredients' object
+         */
+        JSONArray   jsonArrayOfIngredients = jsonObject.getJSONArray("ingredients") ;
+        /*
+            Add any ingedients to 'ingredients'
+         */
+        ingredients = new ArrayList<String>() ;
+        for (int i = 0 ; i < jsonArrayOfIngredients.length() ; i++) {
+            ingredients.add(jsonArrayOfIngredients.getString(i)) ;
+        }
     }
 
     public Sandwich(String mainName, List<String> alsoKnownAs, String placeOfOrigin, String description, String image, List<String> ingredients) {
